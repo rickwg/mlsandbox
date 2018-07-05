@@ -1,4 +1,6 @@
 import os
+import argparse
+
 import pandas as pd
 
 
@@ -25,7 +27,23 @@ def cifar10_create_file_list(cifat10_path: str) -> pd.DataFrame:
     return data
 
 
-cifar10_path = '/home/rick/development/data_local/cifar-10-batches-py/cifar10'
-out_fname = 'cifar10DF.csv'
-df = cifar10_create_file_list(cifar10_path)
-df.to_csv(os.path.join(cifar10_path, out_fname), sep=';', index=False)
+def main(path):
+    cifar10_path = path
+    out_fname = 'cifar10DF.csv'
+    df = cifar10_create_file_list(cifar10_path)
+    df.to_csv(os.path.join(cifar10_path, out_fname), sep=';', index=False)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--data_path',
+        default=None,
+        type=str,
+        help='Data path for cifar10.',
+        action='store_true')
+    args = parser.parse_args()
+    if args.data_path:
+        main(path=args.data_path)
+    else:
+        print('Please, set the data path')
