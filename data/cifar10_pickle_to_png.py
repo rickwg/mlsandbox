@@ -1,6 +1,7 @@
 import pickle
 import os
 import png
+import argparse
 
 
 def cifar10_pickle_to_png(cifar10_path):
@@ -21,17 +22,32 @@ def cifar10_pickle_to_png(cifar10_path):
         f.close()
         for i, filename in enumerate(d['filenames']):
             folder = os.path.join(
-            cifar10_path,
-            'cifar10',
-            fpath.name,
-            labels['label_names'][d['labels'][i]],
+                cifar10_path,
+                'cifar10',
+                fpath.name,
+                labels['label_names'][d['labels'][i]],
             )
             os.makedirs(folder, exist_ok=True)
             q = d['data'][i]
             print(filename)
             with open(os.path.join(folder, filename.decode()), 'wb') as outfile:
-                png.from_array(q.reshape((32, 32, 3), order='F').swapaxes(0,1), mode='RGB').save(outfile)
+                png.from_array(q.reshape((32, 32, 3), order='F').swapaxes(0, 1), mode='RGB').save(outfile)
 
 
-cifar10_path = '/home/rick/development/data_local/cifar-10-batches-py'
-cifar10_pickle_to_png(cifar10_path)
+def main(path):
+    cifar10_pickle_to_png(path)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--data_path',
+        default=None,
+        type=str,
+        help='Data path for cifar10.',
+        action='store_true')
+    args = parser.parse_args()
+    if args.data_path:
+        main(path=args.data_path)
+    else:
+        print('Please, set the data path')
