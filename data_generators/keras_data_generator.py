@@ -83,7 +83,7 @@ def generator_from_df(data, batch_size, target_size, rescale, features=None, deb
 
             except IOError as err:
                 # ToDo: Error handling
-                # At the moment we skip a mini-batch if some images are broken or not readable images
+                # At the moment we skip a mini-batch if some images are broken or not readable
                 count -= 1
 
             i = j
